@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSVP Dashboard — Baby Olivia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose:#B5607A; --rose-dark:#8C3F5B; --blush:#F9E4EE;
+      --lav:#C8B4D4; --gold:#D4AF7A; --ivory:#FDFAF5;
+      --ink:#2D1B26; --ink-soft:#5A3D4A; --white:#fff;
+      --ff-d:'Playfair Display',serif; --ff-s:'Dancing Script',cursive; --ff-b:'Lato',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--ff-b);background:var(--ivory);color:var(--ink);min-height:100vh}
+
+    /* ── HEADER ── */
+    .dash-header{
+      background:linear-gradient(135deg,var(--rose-dark),#6B2D45);
+      padding:2rem 2rem 3.5rem;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .dash-header::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 70% 40%,rgba(212,175,122,.2),transparent 60%);
+    }
+    .dash-logo{font-family:var(--ff-s);font-size:2rem;color:var(--gold);margin-bottom:.3rem}
+    .dash-title{font-family:var(--ff-d);font-size:1.5rem;color:white;font-weight:600}
+    .dash-sub{color:rgba(255,255,255,.65);font-size:.9rem;margin-top:.3rem}
+
+    /* ── STATS STRIP ── */
+    .stats-strip{
+      display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;
+      padding:0 1.5rem;
+      margin-top:-1.8rem;
+      position:relative;z-index:2;
+      margin-bottom:2rem;
+    }
+    .stat-card{
+      background:white;border-radius:16px;padding:1.2rem 2rem;text-align:center;
+      box-shadow:0 8px 30px rgba(181,96,122,.15);
+      border-top:4px solid var(--rose);
+      min-width:140px;flex:1;max-width:200px;
+    }
+    .stat-card.green{border-color:#4caf50}
+    .stat-card.red{border-color:#e57373}
+    .stat-card.gold{border-color:var(--gold)}
+    .stat-num{font-family:var(--ff-d);font-size:2.2rem;font-weight:600;color:var(--ink);line-height:1}
+    .stat-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-soft);margin-top:.4rem;font-weight:700}
+
+    /* ── CONTROLS ── */
+    .controls{
+      max-width:1100px;margin:0 auto;
+      padding:0 1.5rem 1.5rem;
+      display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;
+    }
+    .filter-tabs{display:flex;gap:.5rem;flex-wrap:wrap}
+    .tab{
+      padding:.45rem 1.1rem;border-radius:999px;border:1.5px solid rgba(181,96,122,.3);
+      font-size:.85rem;font-weight:700;cursor:pointer;background:white;
+      color:var(--ink-soft);transition:.2s;
+    }
+    .tab:hover,.tab.active{background:var(--rose);color:white;border-color:var(--rose)}
+    .search-box{
+      display:flex;align-items:center;gap:.5rem;
+      background:white;border:1.5px solid rgba(181,96,122,.2);
+      border-radius:999px;padding:.4rem 1rem;
+    }
+    .search-box input{border:none;outline:none;font-size:.9rem;background:transparent;width:180px;color:var(--ink)}
+    .search-box span{color:var(--ink-soft);font-size:1rem}
+
+    .actions{display:flex;gap:.8rem;flex-wrap:wrap}
+    .btn{
+      padding:.5rem 1.2rem;border-radius:999px;border:none;cursor:pointer;
+      font-size:.85rem;font-weight:700;transition:.2s;
+    }
+    .btn-primary{background:var(--rose);color:white;box-shadow:0 4px 14px rgba(181,96,122,.3)}
+    .btn-primary:hover{background:var(--rose-dark)}
+    .btn-outline{background:white;color:var(--rose);border:1.5px solid var(--rose)}
+    .btn-outline:hover{background:var(--blush)}
+
+    /* ── TABLE ── */
+    .table-wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem 3rem;overflow-x:auto}
+    table{width:100%;border-collapse:collapse;background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 30px rgba(181,96,122,.1)}
+    thead tr{background:linear-gradient(90deg,var(--rose),var(--rose-dark))}
+    thead th{
+      padding:1rem 1.2rem;text-align:left;font-size:.78rem;
+      text-transform:uppercase;letter-spacing:.1em;color:white;font-weight:700;
+    }
+    tbody tr{border-bottom:1px solid rgba(181,96,122,.08);transition:.2s}
+    tbody tr:hover{background:rgba(249,228,238,.5)}
+    tbody tr:last-child{border-bottom:none}
+    td{padding:.9rem 1.2rem;font-size:.9rem;color:var(--ink-soft);vertical-align:top}
+    td.name{font-weight:700;color:var(--ink)}
+    td.email a{color:var(--rose);text-decoration:none}
+    td.email a:hover{text-decoration:underline}
+
+    .badge{
+      display:inline-flex;align-items:center;gap:.3rem;
+      padding:.25rem .8rem;border-radius:999px;font-size:.78rem;font-weight:700;
+    }
+    .badge-yes{background:#e8f5e9;color:#2e7d32}
+    .badge-no {background:#fce4ec;color:#c62828}
+
+    .msg-cell{max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+    .msg-cell:hover{white-space:normal;overflow:visible;background:rgba(249,228,238,.9);position:relative;z-index:5;border-radius:8px;padding:.5rem}
+
+    .ts{font-size:.78rem;color:#aaa}
+    .no-data{text-align:center;padding:4rem;color:var(--ink-soft)}
+    .no-data-icon{font-size:3rem;margin-bottom:1rem}
+
+    /* ── FORMSPREE CALLOUT ── */
+    .callout{
+      max-width:1100px;margin:0 auto 2rem;padding:0 1.5rem;
+    }
+    .callout-inner{
+      background:linear-gradient(135deg,#fff8f0,#fff0f5);
+      border:1.5px solid rgba(212,175,122,.4);
+      border-radius:16px;padding:1.5rem 2rem;
+      display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;
+    }
+    .callout-icon{font-size:2rem;flex-shrink:0}
+    .callout h4{font-family:var(--ff-d);font-size:1.1rem;color:var(--ink);margin-bottom:.4rem}
+    .callout p{font-size:.88rem;color:var(--ink-soft);line-height:1.7}
+    .callout code{background:rgba(181,96,122,.1);color:var(--rose);padding:.1rem .4rem;border-radius:4px;font-size:.85rem}
+    .callout ol{padding-left:1.2rem;margin-top:.5rem}
+    .callout ol li{margin-bottom:.3rem;font-size:.88rem;color:var(--ink-soft)}
+    .callout a{color:var(--rose);font-weight:700}
+
+    /* ── FORMSPREE EMBED ── */
+    .fs-embed-wrap{max-width:1100px;margin:0 auto 2rem;padding:0 1.5rem}
+    .fs-embed-inner{
+      background:white;border-radius:16px;padding:1.5rem 2rem;
+      box-shadow:0 4px 20px rgba(181,96,122,.1);
+    }
+    .fs-embed-inner h4{font-family:var(--ff-d);font-size:1.1rem;color:var(--ink);margin-bottom:1rem}
+    .fs-input-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+    .fs-field{flex:1;min-width:200px}
+    .fs-field label{display:block;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem}
+    .fs-field input{width:100%;padding:.7rem 1rem;border:1.5px solid rgba(181,96,122,.2);border-radius:8px;font-size:.9rem;outline:none;transition:.2s}
+    .fs-field input:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(181,96,122,.12)}
+
+    /* ── MODAL ── */
+    .modal-bg{position:fixed;inset:0;background:rgba(45,27,38,.5);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+    .modal-bg.open{display:flex}
+    .modal{background:white;border-radius:24px;padding:2rem;max-width:480px;width:90%;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+    .modal h3{font-family:var(--ff-d);font-size:1.4rem;color:var(--ink);margin-bottom:1rem}
+    .modal-row{display:flex;gap:.5rem;margin-bottom:.7rem;font-size:.9rem}
+    .modal-label{font-weight:700;color:var(--rose);min-width:80px}
+    .modal-val{color:var(--ink-soft)}
+    .modal-close{margin-top:1.5rem;width:100%;padding:.8rem;background:var(--rose);color:white;border:none;border-radius:999px;font-weight:700;cursor:pointer;font-size:1rem}
+
+    /* ── TOAST ── */
+    .toast{
+      position:fixed;bottom:2rem;right:2rem;z-index:200;
+      background:var(--ink);color:white;padding:.8rem 1.5rem;
+      border-radius:999px;font-size:.9rem;font-weight:600;
+      opacity:0;transform:translateY(20px);transition:.3s;pointer-events:none;
+    }
+    .toast.show{opacity:1;transform:translateY(0)}
+
+    @media(max-width:640px){
+      .stat-card{min-width:120px;padding:1rem}
+      .stat-num{font-size:1.8rem}
+      .controls{flex-direction:column;align-items:stretch}
+      thead th:nth-child(4),td:nth-child(4),
+      thead th:nth-child(5),td:nth-child(5){display:none}
+    }
+  </style>
+</head>
+<body>
+
+<div class="dash-header">
+  <div class="dash-logo">✿ Baby Olivia</div>
+  <div class="dash-title">RSVP Dashboard</div>
+  <div class="dash-sub">Live guest list · Updates instantly when guests submit</div>
+</div>
+
+<!-- Stats -->
+<div class="stats-strip" id="statsStrip">
+  <div class="stat-card"><span class="stat-num" id="statTotal">0</span><div class="stat-label">Total RSVPs</div></div>
+  <div class="stat-card green"><span class="stat-num" id="statYes">0</span><div class="stat-label">Attending ✅</div></div>
+  <div class="stat-card red"><span class="stat-num" id="statNo">0</span><div class="stat-label">Not Attending</div></div>
+  <div class="stat-card gold"><span class="stat-num" id="statGuests">0</span><div class="stat-label">Total Guests</div></div>
+</div>
+
+<!-- Formspree instructions callout -->
+<div class="callout">
+  <div class="callout-inner">
+    <div class="callout-icon">📋</div>
+    <div>
+      <h4>How to receive RSVPs via email &amp; see them in Formspree</h4>
+      <ol>
+        <li>Go to <a href="https://formspree.io" target="_blank">formspree.io</a> → Sign up free → Click <strong>"New Form"</strong></li>
+        <li>Name it <em>"Baby Shower RSVP"</em> → Copy the endpoint ID (e.g. <code>xpwzabcd</code>)</li>
+        <li>Open <code>js/main.js</code> → Find line with <code>YOUR_FORM_ID</code> → Paste your ID</li>
+        <li>Redeploy to Vercel → Every RSVP emails you instantly + logs to Formspree dashboard</li>
+      </ol>
+      <p style="margin-top:.5rem">📊 <strong>Formspree dashboard</strong>: <a href="https://formspree.io/forms" target="_blank">formspree.io/forms</a> → click your form → see all submissions in a table, export CSV</p>
+    </div>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+    <div class="filter-tabs">
+      <button class="tab active" onclick="setFilter('all',this)">All</button>
+      <button class="tab" onclick="setFilter('yes',this)">✅ Attending</button>
+      <button class="tab" onclick="setFilter('no',this)">❌ Not Attending</button>
+    </div>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by name or email…" oninput="renderTable()" />
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-outline" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="btn btn-outline" onclick="clearAll()" style="border-color:#e57373;color:#c62828">🗑 Clear All</button>
+    <button class="btn btn-primary" onclick="addSampleData()">+ Add Sample RSVP</button>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Attending</th>
+        <th>Guests</th>
+        <th>Message</th>
+        <th>Submitted</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="rsvpTableBody">
+      <tr><td colspan="8" class="no-data"><div class="no-data-icon">💌</div><p>No RSVPs yet — share the invitation link!</p></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Row detail modal -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal">
+    <h3 id="modalName">Guest Details</h3>
+    <div class="modal-row"><div class="modal-label">Email</div><div class="modal-val" id="mEmail"></div></div>
+    <div class="modal-row"><div class="modal-label">Attending</div><div class="modal-val" id="mAttending"></div></div>
+    <div class="modal-row"><div class="modal-label">Guests</div><div class="modal-val" id="mGuests"></div></div>
+    <div class="modal-row"><div class="modal-label">Message</div><div class="modal-val" id="mMessage"></div></div>
+    <div class="modal-row"><div class="modal-label">Time</div><div class="modal-val" id="mTime"></div></div>
+    <button class="modal-close" onclick="document.getElementById('modalBg').classList.remove('open')">Close</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ────────────────────────────────────────────
+const STORAGE_KEY = 'baby_shower_rsvps';
+let allRsvps = [];
+let currentFilter = 'all';
+
+function load() {
+  try { allRsvps = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch(e) { allRsvps = []; }
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(allRsvps)); }
+  catch(e) {}
+}
+
+// ── STATS ────────────────────────────────────────────
+function updateStats() {
+  const yes      = allRsvps.filter(r => r.attending === 'yes');
+  const no       = allRsvps.filter(r => r.attending === 'no');
+  const guestSum = allRsvps.filter(r => r.attending === 'yes')
+                           .reduce((s, r) => s + parseInt(r.guests || 1, 10), 0);
+  document.getElementById('statTotal').textContent  = allRsvps.length;
+  document.getElementById('statYes').textContent    = yes.length;
+  document.getElementById('statNo').textContent     = no.length;
+  document.getElementById('statGuests').textContent = guestSum;
+}
+
+// ── FILTER + SEARCH ───────────────────────────────────
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function filteredList() {
+  const q = (document.getElementById('searchInput').value || '').toLowerCase();
+  return allRsvps.filter(r => {
+    const matchFilter = currentFilter === 'all' || r.attending === currentFilter;
+    const matchSearch = !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q);
+    return matchFilter && matchSearch;
+  });
+}
+
+// ── RENDER TABLE ──────────────────────────────────────
+function renderTable() {
+  updateStats();
+  const list = filteredList();
+  const body = document.getElementById('rsvpTableBody');
+
+  if (!list.length) {
+    body.innerHTML = `<tr><td colspan="8" class="no-data">
+      <div class="no-data-icon">${allRsvps.length ? '🔍' : '💌'}</div>
+      <p>${allRsvps.length ? 'No results match your search.' : 'No RSVPs yet — share the invitation link!'}</p>
+    </td></tr>`;
+    return;
+  }
+
+  body.innerHTML = list.map((r, i) => {
+    const idx  = allRsvps.indexOf(r) + 1;
+    const date = r.ts ? new Date(r.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    const badge = r.attending === 'yes'
+      ? '<span class="badge badge-yes">✅ Attending</span>'
+      : '<span class="badge badge-no">❌ Not attending</span>';
+    const msg = r.message ? r.message.slice(0, 50) + (r.message.length > 50 ? '…' : '') : '<em style="opacity:.4">—</em>';
+    return `<tr>
+      <td class="ts">${idx}</td>
+      <td class="name">${esc(r.name)}</td>
+      <td class="email"><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></td>
+      <td>${badge}</td>
+      <td>${r.guests || 1}</td>
+      <td class="msg-cell" title="${esc(r.message || '')}">${msg}</td>
+      <td class="ts">${date}</td>
+      <td><button class="btn btn-outline" style="padding:.3rem .8rem;font-size:.8rem" onclick="openModal(${allRsvps.indexOf(r)})">View</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── MODAL ─────────────────────────────────────────────
+function openModal(i) {
+  const r = allRsvps[i];
+  if (!r) return;
+  document.getElementById('modalName').textContent     = r.name;
+  document.getElementById('mEmail').textContent        = r.email;
+  document.getElementById('mAttending').textContent    = r.attending === 'yes' ? '✅ Attending' : '❌ Not attending';
+  document.getElementById('mGuests').textContent       = r.guests || 1;
+  document.getElementById('mMessage').textContent      = r.message || '(no message)';
+  document.getElementById('mTime').textContent         = r.ts ? new Date(r.ts).toLocaleString() : '—';
+  document.getElementById('modalBg').classList.add('open');
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modalBg'))
+    document.getElementById('modalBg').classList.remove('open');
+}
+
+// ── EXPORT CSV ────────────────────────────────────────
+function exportCSV() {
+  if (!allRsvps.length) { showToast('No RSVPs to export yet.'); return; }
+  const headers = ['#','Name','Email','Attending','Guests','Message','Submitted'];
+  const rows = allRsvps.map((r, i) => [
+    i + 1,
+    `"${(r.name||'').replace(/"/g,'""')}"`,
+    r.email,
+    r.attending === 'yes' ? 'Yes' : 'No',
+    r.guests || 1,
+    `"${(r.message||'').replace(/"/g,'""')}"`,
+    r.ts ? new Date(r.ts).toLocaleString() : '',
+  ].join(','));
+  const csv  = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'baby_shower_rsvps.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ CSV downloaded!');
+}
+
+// ── SAMPLE DATA ───────────────────────────────────────
+function addSampleData() {
+  const samples = [
+    { name:'Emma Wilson',    email:'emma@example.com',   attending:'yes', guests:'2', message:'So excited! 💕',                ts: new Date(Date.now()-86400000*2).toISOString() },
+    { name:'James & Lucy',   email:'jl@example.com',     attending:'yes', guests:'2', message:'We\'ll bring the cake!',          ts: new Date(Date.now()-86400000).toISOString() },
+    { name:'Rachel Green',   email:'rachel@example.com', attending:'no',  guests:'1', message:'So sorry, I have a work trip 😢', ts: new Date(Date.now()-3600000).toISOString() },
+    { name:'Priya Sharma',   email:'priya@example.com',  attending:'yes', guests:'1', message:'',                                ts: new Date().toISOString() },
+  ];
+  allRsvps = [...samples, ...allRsvps];
+  save(); renderTable();
+  showToast('✅ Sample RSVPs added!');
+}
+
+// ── CLEAR ─────────────────────────────────────────────
+function clearAll() {
+  if (!confirm('Delete all RSVP data from this browser? This cannot be undone.')) return;
+  allRsvps = []; save(); renderTable();
+  showToast('🗑 All local RSVPs cleared.');
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── POLL FOR NEW RSVPS ────────────────────────────────
+// Polls every 10s in case the invitation is open in another tab
+let lastCount = 0;
+setInterval(() => {
+  const prev = allRsvps.length;
+  load();
+  if (allRsvps.length > prev) { renderTable(); showToast(`🎉 ${allRsvps.length - prev} new RSVP!`); }
+}, 10000);
+
+// ── INIT ──────────────────────────────────────────────
+load();
+renderTable();
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Baby Shower — Blessed by Radha Krishna 🪷</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;1,400&family=Dancing+Script:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Floating petals -->
+  <div class="petals-wrap" aria-hidden="true">
+    <span class="petal p1">🌸</span><span class="petal p2">🌼</span>
+    <span class="petal p3">🪷</span><span class="petal p4">🌸</span>
+    <span class="petal p5">🌼</span><span class="petal p6">🪷</span>
+    <span class="petal p7">🌸</span><span class="petal p8">🌼</span>
+  </div>
+
+  <!-- ══ NAV ══ -->
+  <nav class="nav" id="nav">
+    <div class="nav-logo"><span class="nav-om">ॐ</span> Baby Arya</div>
+    <ul class="nav-links">
+      <li><a href="#details">Details</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#rsvp" class="nav-cta">RSVP 💌</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Menu">☰</button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">✕</button>
+    <ul>
+      <li><a href="#details"  class="mob-link">Details</a></li>
+      <li><a href="#schedule" class="mob-link">Schedule</a></li>
+      <li><a href="#gallery"  class="mob-link">Gallery</a></li>
+      <li><a href="#rsvp"     class="mob-link">RSVP 💌</a></li>
+    </ul>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+
+    <!-- Background decorative arches / mandala petals -->
+    <div class="hero-bg-arch" aria-hidden="true">
+      <div class="arch-ring ar1"></div>
+      <div class="arch-ring ar2"></div>
+      <div class="arch-ring ar3"></div>
+    </div>
+
+    <!-- Flower garland corners -->
+    <div class="corner-flower cf-tl" aria-hidden="true">🌸🌼🌸</div>
+    <div class="corner-flower cf-tr" aria-hidden="true">🌸🌼🌸</div>
+    <div class="corner-flower cf-bl" aria-hidden="true">🌼🌸🌼</div>
+    <div class="corner-flower cf-br" aria-hidden="true">🌼🌸🌼</div>
+
+    <!-- MAIN: Hero circular image (swing pic) — centre -->
+    <div class="hero-center">
+
+      <!-- Glowing halo ring behind image -->
+      <div class="hero-halo" aria-hidden="true">
+        <div class="halo-ring h1"></div>
+        <div class="halo-ring h2"></div>
+        <div class="halo-glow"></div>
+      </div>
+
+      <!-- The main circular image -->
+      <div class="hero-img-wrap float-anim">
+        <img src="assets/rk_main.png" alt="Radha Krishna on swing" class="hero-img"/>
+        <!-- Gold ring border -->
+        <div class="hero-img-ring"></div>
+      </div>
+
+      <!-- Decorative sparkles around the image -->
+      <span class="sparkle sp1">✦</span>
+      <span class="sparkle sp2">✧</span>
+      <span class="sparkle sp3">✦</span>
+      <span class="sparkle sp4">✧</span>
+      <span class="sparkle sp5">🌸</span>
+      <span class="sparkle sp6">🌸</span>
+    </div>
+
+    <!-- Hero text below the image -->
+    <div class="hero-text">
+      <p class="hero-eyebrow">🪷 राधे राधे · Blessed by Divine Love 🪷</p>
+      <h1 class="hero-title">
+        <span class="title-script">Baby Shower</span>
+        <span class="title-sub">for Little Arya</span>
+      </h1>
+      <p class="hero-desc">
+        As Radha and Krishna's eternal love fills every heart with joy,<br class="d-none-sm"/>
+        we celebrate the arrival of our little blessing 💛
+      </p>
+      <div class="hero-pills">
+        <div class="pill">📅 August 17, 2025</div>
+        <div class="pill">⏰ 2:00 PM – 5:00 PM</div>
+        <div class="pill">📍 The Garden Terrace</div>
+      </div>
+      <a href="#rsvp" class="hero-btn">Join the Celebration 🎉</a>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- ══ COUNTDOWN ══ -->
+  <section class="countdown-section">
+    <div class="cd-wrap">
+      <p class="cd-eyebrow">🕐 Counting Down To The Celebration</p>
+      <div class="countdown-grid" id="countdown">
+        <div class="count-card">
+          <span class="count-num" id="days">00</span>
+          <span class="count-label">Days</span>
+        </div>
+        <div class="count-sep">:</div>
+        <div class="count-card">
+          <span class="count-num" id="hours">00</span>
+          <span class="count-label">Hours</span>
+        </div>
+        <div class="count-sep">:</div>
+        <div class="count-card">
+          <span class="count-num" id="minutes">00</span>
+          <span class="count-label">Minutes</span>
+        </div>
+        <div class="count-sep">:</div>
+        <div class="count-card">
+          <span class="count-num" id="seconds">00</span>
+          <span class="count-label">Seconds</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DETAILS ══ -->
+  <section class="details-section" id="details">
+    <div class="container">
+      <p class="section-eyebrow">🌸 Event Details</p>
+      <h2 class="section-title">Come Celebrate <em>With Us!</em></h2>
+      <p class="section-sub">Every detail has been lovingly arranged to honour this divine new blessing.</p>
+      <div class="details-grid">
+
+        <div class="detail-card" data-aos>
+          <div class="detail-emoji">📅</div>
+          <h3>Date & Time</h3>
+          <p class="detail-main">Sunday, August 17, 2025</p>
+          <p class="detail-info">2:00 PM – 5:00 PM</p>
+          <p class="detail-note">Doors open at 1:45 PM</p>
+        </div>
+
+        <div class="detail-card featured-card" data-aos>
+          <div class="detail-emoji">📍</div>
+          <h3>Venue</h3>
+          <p class="detail-main">The Garden Terrace</p>
+          <p class="detail-info">142 Blossom Lane, Suite 4</p>
+          <p class="detail-info">Meadowbrook, CA 90210</p>
+          <a href="https://maps.google.com" target="_blank" class="detail-link">View on Map →</a>
+        </div>
+
+        <div class="detail-card" data-aos>
+          <div class="detail-emoji">👗</div>
+          <h3>Dress Code</h3>
+          <p class="detail-main">Traditional / Festive</p>
+          <p class="detail-info">Sarees, Salwar Kameez & formals</p>
+          <p class="detail-note">🌸 Think saffron, gold, pink & green</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GALLERY: 3 more RK images ══ -->
+  <!-- <section class="gallery-section" id="gallery">
+    <div class="container">
+      <p class="section-eyebrow">✨ Blessed Moments</p>
+      <h2 class="section-title">Our <em>Radha Krishna</em> Blessings</h2>
+      <div class="gallery-grid">
+
+        <div class="gallery-card" data-aos>
+          <div class="gal-img-wrap">
+            <img src="assets/rk_forest.png" alt="Baby Radha Krishna in forest" class="gal-img"/>
+            <div class="gal-ring"></div>
+          </div>
+          <div class="gal-label">🌿 Divine Childhood</div>
+        </div>
+
+        <div class="gallery-card gallery-card-large" data-aos>
+          <div class="gal-img-wrap large">
+            <img src="assets/rk_holi.png" alt="Holi celebration" class="gal-img"/>
+            <div class="gal-ring"></div>
+          </div>
+          <div class="gal-label">🌈 Love & Colours</div>
+        </div>
+
+        <div class="gallery-card" data-aos>
+          <div class="gal-img-wrap">
+            <img src="assets/rk_mother.png" alt="Mother with baby Krishna" class="gal-img"/>
+            <div class="gal-ring"></div>
+          </div>
+          <div class="gal-label">💛 Mother's Love</div>
+        </div>
+
+      </div>
+      <p class="gallery-blessing">
+        <span class="devanagari" style="font-size:1.4rem;color:#C0507A">राधे कृष्ण</span>
+        &nbsp;· May their divine love bless our little one always 🪷
+      </p>
+    </div>
+  </section> -->
+
+  <!-- ══ SCHEDULE ══ -->
+  <section class="schedule-section" id="schedule">
+    <div class="sched-bg" aria-hidden="true"></div>
+    <div class="container">
+      <p class="section-eyebrow">🌸 What To Expect</p>
+      <h2 class="section-title">The Day's <em>Celebrations</em></h2>
+      <div class="timeline">
+        <div class="tl-item" data-aos>
+          <div class="tl-icon">🪷</div>
+          <div class="tl-time">1:45 PM</div>
+          <div class="tl-card">
+            <h4>Welcome & Aarti</h4>
+            <p>Arrive to a warm welcome, a blessing lamp ceremony & refreshing drinks</p>
+          </div>
+        </div>
+        <div class="tl-item" data-aos>
+          <div class="tl-icon">🍽️</div>
+          <div class="tl-time">2:00 PM</div>
+          <div class="tl-card">
+            <h4>Feast & Fellowship</h4>
+            <p>Delicious vegetarian spread, traditional sweets & masala chai</p>
+          </div>
+        </div>
+        <div class="tl-item" data-aos>
+          <div class="tl-icon">🎶</div>
+          <div class="tl-time">2:45 PM</div>
+          <div class="tl-card">
+            <h4>Bhajans & Baby Games</h4>
+            <p>Live bhajans, baby predictions, fun group activities & prizes</p>
+          </div>
+        </div>
+        <div class="tl-item" data-aos>
+          <div class="tl-icon">🎁</div>
+          <div class="tl-time">3:30 PM</div>
+          <div class="tl-card">
+            <h4>Gift Blessings</h4>
+            <p>Shower our little Arya with gifts, love & heartfelt blessings</p>
+          </div>
+        </div>
+        <div class="tl-item" data-aos>
+          <div class="tl-icon">🎂</div>
+          <div class="tl-time">4:30 PM</div>
+          <div class="tl-card">
+            <h4>Cake & Farewells</h4>
+            <p>Prasad, cake cutting, photos & a sweet favour to take home</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RSVP ══ -->
+  <section class="rsvp-section" id="rsvp">
+    <div class="rsvp-bg-deco" aria-hidden="true"></div>
+    <div class="container rsvp-inner">
+
+      <div class="rsvp-left" data-aos>
+        <p class="section-eyebrow light">💌 RSVP</p>
+        <h2 class="section-title light">Will You <em>Join Us?</em></h2>
+        <p class="rsvp-desc">Please bless us with your presence by <strong>August 1, 2025</strong>. We would be so honoured to celebrate this divine occasion together! 🪷</p>
+        <div class="rsvp-info-list">
+          <div class="rsvp-info-row"><span>🪷</span><p>Vegetarian feast — dietary needs? Just mention in the message!</p></div>
+          <div class="rsvp-info-row"><span>🚗</span><p>Free parking at the Blossom Lane main lot.</p></div>
+          <div class="rsvp-info-row"><span>💌</span><p>Questions? <a href="mailto:family@example.com">family@example.com</a></p></div>
+        </div>
+        <!-- Small RK image in RSVP -->
+        <div class="rsvp-mini-img">
+          <img src="assets/rk_forest.png" alt="Radha Krishna" class="rsvp-mini"/>
+        </div>
+      </div>
+
+      <div class="rsvp-right" data-aos>
+        <div class="rsvp-card">
+          <div class="rsvp-card-top">
+            <span class="rsvp-om">ॐ</span>
+            <h3>Send Your RSVP</h3>
+            <p class="rsvp-card-sub">राधे राधे 🌸</p>
+          </div>
+          <div id="rsvp-form-wrap">
+            <div class="form-group">
+              <label for="rsvp-name">Full Name *</label>
+              <input type="text" id="rsvp-name" placeholder="Your full name" required/>
+            </div>
+            <div class="form-group">
+              <label for="rsvp-email">Email Address *</label>
+              <input type="email" id="rsvp-email" placeholder="your@email.com" required/>
+            </div>
+            <div class="form-group">
+              <label for="rsvp-guests">Number of Guests</label>
+              <select id="rsvp-guests">
+                <option value="1">Just me (1)</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+              </select>
+            </div>
+            <div class="form-group radio-group">
+              <label>Attending? *</label>
+              <div class="radio-row">
+                <label class="radio-opt">
+                  <input type="radio" name="attending" value="yes" checked/>
+                  <span class="radio-custom"></span>
+                  <span>🎉 Yes, I'll be there!</span>
+                </label>
+                <label class="radio-opt">
+                  <input type="radio" name="attending" value="no"/>
+                  <span class="radio-custom"></span>
+                  <span>😢 Can't make it</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="rsvp-msg">Blessings / Message (optional)</label>
+              <textarea id="rsvp-msg" rows="3" placeholder="Share a blessing for baby Arya..."></textarea>
+            </div>
+            <button class="rsvp-submit" id="rsvp-btn">
+              <span id="rsvp-btn-text">Send RSVP 🪷</span>
+            </button>
+          </div>
+          <div class="rsvp-success" id="rsvp-success" style="display:none">
+            <div class="success-icon">🎊</div>
+            <h3>Jai Shri Krishna!</h3>
+            <p>Thank you for your blessings! We are so excited to celebrate with you on August 17th! 🪷</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-imgs" aria-hidden="true">
+        <img src="assets/rk_main.png" alt="" class="ft-img"/>
+      </div>
+      <div class="footer-om">ॐ</div>
+      <div class="footer-title">Baby Arya</div>
+      <p class="footer-date">August 17, 2025 · The Garden Terrace</p>
+      <div class="footer-lotuses">🌸 ✦ 🪷 ✦ 🌸</div>
+      <div class="footer-divider"></div>
+      <p class="footer-quote">
+        "Where there is love, there is life."
+        <span>— Bhagavad Gita</span>
+      </p>
+      <p class="footer-devanagari">राधे कृष्ण · Blessed with Divine Love</p>
+      <p class="footer-copy">Made with 💛 for the Family · 2025</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
