@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── RSVP → FORMSPREE ── */
-  const FORMSPREE_ID='xojoaagw';
+  const FORMSPREE_ID='mykqgjep';
   const btn=document.getElementById('rsvp-btn');
   if(btn){
     btn.addEventListener('click',()=>{
